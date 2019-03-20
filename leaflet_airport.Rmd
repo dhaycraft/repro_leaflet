@@ -1,0 +1,43 @@
+---
+title: "Major Airports Labeled on World Map"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 2019-03-20
+
+- Leaflet map of airport clusters
+- Zoom in and click on labels to see airport names
+
+```{r load_libs, echo = FALSE, include=FALSE}
+
+library(leaflet)
+library(dplyr)
+library(readr)
+
+if (!file.exists("airports.dat")) {
+  download.file(
+    "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat",
+    "airports.dat"
+  )
+}
+
+df <- read_csv("airports.dat",
+  col_names = c("id", "name", "city", "country", "faa", "icao", "lat", "lon", "alt", "tz", "dst", "tzone")
+)
+
+air_latlon <- df %>% select(lat, lon)
+
+```
+
+
+```{r leaflet, echo = FALSE}
+air_latlon  %>% 
+  leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(popup=df$name, clusterOptions=markerClusterOptions())
+
+```
