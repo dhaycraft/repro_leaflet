@@ -1,0 +1,39 @@
+---
+title: "Iris Clustering"
+output: ioslides_presentation
+author: "David Haycraft"
+date: "2019-03-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Iris Clustering Plot
+
+- Generated using plotly
+- <http://rpubs.com/dhaycraft/leaflet_airports>
+
+```{r load_libs, echo = FALSE, include=FALSE}
+
+library(plotly)
+library(dplyr)
+
+icm =kmeans(as.matrix(iris[,c(1,4)]), centers = 3, iter.max= 25)
+iris$Cluster = as.factor(icm$cluster)
+
+p <- plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Width, color = ~Cluster, symbol= ~Species)
+
+
+```
+
+
+```{r leaflet, echo = FALSE, message=FALSE}
+p
+
+```
+
+
+## The End
+
+
